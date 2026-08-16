@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { exec } from "child_process";
 
 interface Connection {
@@ -118,11 +120,13 @@ exec("netstat -ano -p tcp", (error, stdout) => {
       }
 
       console.log(`Port ${requestedPort} is in use.\n`);
+
       console.table(matches);
       return;
     }
 
     console.log("\nPORTPEEK\n");
+
     console.table(ports);
   });
 });
