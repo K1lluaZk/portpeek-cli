@@ -17,10 +17,31 @@ interface PortInfo {
   process: string;
 }
 
+const args = process.argv.slice(2);
+
+if (args.includes("--help") || args.includes("-h")) {
+  console.log(`
+PortPeek - Simple Windows port inspector
+
+Usage:
+  portpeek             List listening ports
+  portpeek <port>      Check a specific port
+  portpeek --help      Show this help
+`);
+  process.exit(0);
+}
+
+const requestedPort = args[0] ? Number(args[0]) : null;
+
+if (args[0] && (Number.isNaN(requestedPort) || requestedPort! < 1 || requestedPort! > 65535)) {
+  console.error("Invalid port. Use a number between 1 and 65535.");
+  process.exit(1);
+}
+
 exec("netstat -ano -p tcp", (error, stdout) => {
   if (error) {
-    console.error(error.message);
-    return;
+    console.error("Failed to read network connections.");
+    process.exit(1);
   }
 
   const connections: Connection[] = stdout
@@ -62,8 +83,8 @@ exec("netstat -ano -p tcp", (error, stdout) => {
 
   exec("tasklist /FO CSV /NH", (error, tasklistOutput) => {
     if (error) {
-      console.error(error.message);
-      return;
+      console.error("Failed to read running processes.");
+      process.exit(1);
     }
 
     const processes = new Map<number, string>();
@@ -81,13 +102,27 @@ exec("netstat -ano -p tcp", (error, stdout) => {
         processes.set(pid, name);
       });
 
-    const result: PortInfo[] = listeningPorts.map((connection) => ({
+    const ports: PortInfo[] = listeningPorts.map((connection) => ({
       port: connection.localPort,
       address: connection.localAddress,
       pid: connection.pid,
       process: processes.get(connection.pid) ?? "Unknown"
     }));
 
-    console.table(result);
+    if (requestedPort !== null) {
+      const matches = ports.filter((port) => port.port === requestedPort);
+
+      if (matches.length === 0) {
+        console.log(`Port ${requestedPort} is available.`);
+        return;
+      }
+
+      console.log(`Port ${requestedPort} is in use.\n`);
+      console.table(matches);
+      return;
+    }
+
+    console.log("\nPORTPEEK\n");
+    console.table(ports);
   });
 });
