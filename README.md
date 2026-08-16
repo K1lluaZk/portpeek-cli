@@ -12,102 +12,105 @@ CLI ligera para inspeccionar puertos TCP en Windows, identificar procesos asocia
   <img src="https://img.shields.io/badge/License-MIT-green?style=flat" alt="MIT License">
 </p>
 
----
+# 📖 About the Project
 
-# 📖 Acerca del Proyecto
+**PortPeek** is a command-line tool developed to quickly and easily query TCP ports currently in the `LISTENING` state on a Windows system.
 
-**PortPeek** es una herramienta de línea de comandos desarrollada para consultar de forma rápida y sencilla los puertos TCP que se encuentran actualmente en estado `LISTENING` en un sistema Windows.
+The tool allows you to view relevant information such as the **port**, **local address**, **PID**, and associated **process**.
 
-La herramienta permite visualizar información relevante como el **puerto**, la **dirección local**, el **PID** y el **proceso** asociado.
+The project was developed using **Node.js and TypeScript**, leveraging native Windows tools such as `netstat` and `tasklist`.
 
-El proyecto fue desarrollado utilizando **Node.js y TypeScript**, aprovechando herramientas nativas de Windows como `netstat` y `tasklist`.
-
-El objetivo principal de PortPeek es ofrecer una alternativa pequeña y directa para resolver una tarea cotidiana durante el desarrollo y la administración de sistemas: **saber qué está utilizando un puerto determinado**.
+The main goal of PortPeek is to offer a small and straightforward alternative to solve an everyday task during development and system administration: **knowing what is using a specific port**.
 
 ---
 
-# ✨ Características Principales
+# ✨ Main Features
 
-- 🔎 Lista los puertos TCP actualmente en estado `LISTENING`.
-- 🧩 Identifica el proceso asociado a cada puerto.
-- 🆔 Muestra el PID del proceso.
-- 🌐 Muestra la dirección local utilizada por el puerto.
-- ⚡ Permite comprobar rápidamente un puerto específico.
-- 📋 Indica si un puerto está disponible o en uso.
-- 🪶 CLI ligera y sencilla.
-- 🪟 Diseñada específicamente para Windows.
-- 🚫 Sin dependencias externas necesarias durante la ejecución.
+* 🔎 Lists TCP ports currently in the `LISTENING` state.
+* 🧩 Identifies the process associated with each port.
+* 🆔 Displays the process PID.
+* 🌐 Shows the local address used by the port.
+* ⚡ Allows you to quickly check a specific port.
+* 📋 Indicates whether a port is available or in use.
+* 🪶 Lightweight and simple CLI.
+* 🪟 Designed specifically for Windows.
+* 🚫 No external dependencies required during runtime.
 
 ---
 
-# 🛠 Tecnologías Utilizadas
+# 🛠 Technologies Used
 
-### Lenguaje
+### Language
 
-- TypeScript
+* TypeScript
 
 ### Runtime
 
-- Node.js
+* Node.js
 
-### Herramientas del sistema
+### System Tools
 
-- `netstat`
-- `tasklist`
+* `netstat`
+* `tasklist`
 
-### Gestión de paquetes
+### Package Management
 
-- npm
+* npm
 
-### Herramientas de desarrollo
+### Development Tools
 
-- Git
-- GitHub
-- Visual Studio Code
+* Git
+* GitHub
+* Visual Studio Code
 
 ---
 
-# 🚀 Instalación
+# 🚀 Installation
 
-### 1. Clonar el repositorio
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/K1lluaZk/portpeek-cli.git
-````
 
-### 2. Entrar al proyecto
+```
+
+### 2. Enter the project folder
 
 ```bash
 cd portpeek-cli
+
 ```
 
-### 3. Instalar dependencias
+### 3. Install dependencies
 
 ```bash
 npm install
+
 ```
 
-### 4. Compilar el proyecto
+### 4. Build the project
 
 ```bash
 npm run build
+
 ```
 
 ---
 
-# 💻 Uso
+# 💻 Usage
 
-## Listar puertos
+## List ports
 
-Ejecuta:
+Run:
 
 ```bash
 node dist/index.js
+
 ```
 
-El comando mostrará los puertos TCP que están actualmente escuchando.
+The command will display the TCP ports that are currently listening.
 
-Ejemplo:
+Example:
 
 ```text
 PORTPEEK
@@ -120,120 +123,134 @@ PORTPEEK
 │    2    │ 3306 │ '0.0.0.0'   │ 968  │ 'mysqld.exe'   │
 │    3    │ 5432 │ '0.0.0.0'   │ 7816 │ 'postgres.exe' │
 └─────────┴──────┴─────────────┴──────┴────────────────┘
+
 ```
 
 ---
 
-## Comprobar un puerto específico
+## Check a specific port
 
-Puedes consultar directamente un puerto:
+You can directly query a port:
 
 ```bash
 node dist/index.js 5432
+
 ```
 
-Si el puerto está siendo utilizado:
+If the port is in use:
 
 ```text
 Port 5432 is in use.
+
 ```
 
-Si el puerto está disponible:
+If the port is available:
 
 ```bash
 node dist/index.js 9999
+
 ```
 
 ```text
 Port 9999 is available.
+
 ```
 
 ---
 
-## Mostrar ayuda
+## Show help
 
 ```bash
 node dist/index.js --help
+
 ```
 
-También puedes utilizar:
+You can also use:
 
 ```bash
 node dist/index.js -h
+
 ```
 
 ---
 
-# ⚙️ Instalación como CLI
+# ⚙️ Installation as a CLI
 
-PortPeek también puede instalarse globalmente desde el proyecto utilizando `npm link`.
+PortPeek can also be installed globally from the project using `npm link`.
 
-Primero compila el proyecto:
+First, build the project:
 
 ```bash
 npm run build
+
 ```
 
-Después:
+Then:
 
 ```bash
 npm link
+
 ```
 
-A partir de ese momento puedes utilizar:
+From that moment on, you can use:
 
 ```bash
 portpeek
+
 ```
 
-Para consultar un puerto:
+To query a port:
 
 ```bash
 portpeek 5432
+
 ```
 
-Y para mostrar la ayuda:
+And to show the help:
 
 ```bash
 portpeek --help
+
 ```
 
 ---
 
-# 🔍 ¿Cómo funciona?
+# 🔍 How does it work?
 
-PortPeek utiliza herramientas nativas disponibles en Windows para obtener la información necesaria.
+PortPeek uses native tools available in Windows to obtain the necessary information.
 
 ### `netstat`
 
-Se utiliza para obtener las conexiones TCP y detectar cuáles se encuentran en estado:
+It is used to get TCP connections and detect which ones are in the state:
 
 ```text
 LISTENING
+
 ```
 
-A partir de esta información se obtiene:
+From this information, the following is obtained:
 
-* Dirección local.
-* Puerto local.
+* Local address.
+* Local port.
 * PID.
-* Estado de la conexión.
+* Connection state.
 
 ### `tasklist`
 
-Posteriormente se utiliza `tasklist` para relacionar cada PID con el nombre del proceso correspondiente.
+Next, `tasklist` is used to relate each PID to the name of the corresponding process.
 
-Por ejemplo:
+For example:
 
 ```text
 5432 → PID 7816 → postgres.exe
+
 ```
 
-PortPeek combina ambas fuentes y presenta la información de una manera más sencilla de consultar.
+PortPeek combines both sources and presents the information in a much easier way to consult.
 
 ---
 
-# 📁 Estructura del Proyecto
+# 📁 Project Structure
 
 ```text
 portpeek-cli/
@@ -247,38 +264,40 @@ portpeek-cli/
 ├── package-lock.json
 ├── README.md
 └── tsconfig.json
+
 ```
 
-La carpeta `dist/` se genera durante la compilación y no forma parte del repositorio.
+The `dist/` folder is generated during compilation and is not part of the repository.
 
 ---
 
-# 🧪 Desarrollo
+# 🧪 Development
 
-Para compilar el proyecto:
+To compile the project:
 
 ```bash
 npm run build
+
 ```
 
-Para ejecutar la versión compilada:
+To run the compiled version:
 
 ```bash
 npm start
+
 ```
 
-También puedes ejecutar directamente:
+You can also run it directly:
 
 ```bash
 node dist/index.js
+
 ```
 
 ---
 
-# 📜 Licencia
+# 📜 License
 
-Este proyecto está disponible bajo la licencia **MIT**.
+This project is available under the **MIT** license.
 
-Consulta el archivo [LICENSE](LICENSE) para obtener más información.
-
-
+Check the [LICENSE](https://www.google.com/search?q=LICENSE) file for more information.
