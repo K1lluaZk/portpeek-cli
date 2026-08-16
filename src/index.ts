@@ -10,6 +10,13 @@ interface Connection {
   pid: number;
 }
 
+interface PortInfo {
+  port: number;
+  address: string;
+  pid: number;
+  process: string;
+}
+
 exec("netstat -ano -p tcp", (error, stdout) => {
   if (error) {
     console.error(error.message);
@@ -53,5 +60,34 @@ exec("netstat -ano -p tcp", (error, stdout) => {
     (connection) => connection.state === "LISTENING"
   );
 
-  console.log(listeningPorts);
+  exec("tasklist /FO CSV /NH", (error, tasklistOutput) => {
+    if (error) {
+      console.error(error.message);
+      return;
+    }
+
+    const processes = new Map<number, string>();
+
+    tasklistOutput
+      .split("\n")
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .forEach((line) => {
+        const parts = line.split('","');
+
+        const name = parts[0] ? parts[0].replace(/^"/, "") : "Unknown";
+        const pid = parts[1] ? Number(parts[1].replace(/"$/, "")) : 0;
+
+        processes.set(pid, name);
+      });
+
+    const result: PortInfo[] = listeningPorts.map((connection) => ({
+      port: connection.localPort,
+      address: connection.localAddress,
+      pid: connection.pid,
+      process: processes.get(connection.pid) ?? "Unknown"
+    }));
+
+    console.table(result);
+  });
 });
