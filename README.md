@@ -2,7 +2,7 @@
 # <p align="center">🔭 PortPeek — Windows Port Inspector</p>
 
 <p align="center">
-CLI ligera para inspeccionar puertos TCP en Windows, identificar procesos asociados y comprobar rápidamente si un puerto está disponible.
+Lightweight CLI for inspecting TCP ports in Windows, identifying associated processes, and quickly checking if a port is available.
 </p>
 
 <p align="center">
