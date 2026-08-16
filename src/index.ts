@@ -49,5 +49,9 @@ exec("netstat -ano -p tcp", (error, stdout) => {
       };
     });
 
-  console.log(connections);
+  const listeningPorts = connections.filter(
+    (connection) => connection.state === "LISTENING"
+  );
+
+  console.log(listeningPorts);
 });
